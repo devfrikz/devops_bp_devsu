@@ -29,3 +29,5 @@ EXPOSE 8000
 
 # Comando para ejecutar la aplicación
 CMD ["java", "-jar", "app.jar"]
+
+# PATH: .dockerignore
