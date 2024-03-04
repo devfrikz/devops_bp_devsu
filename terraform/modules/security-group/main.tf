@@ -19,6 +19,13 @@ resource "aws_security_group" "devops_devsu_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  # Allow inbound traffic on port 8000
+  ingress {
+    from_port   = 8000
+    to_port     = 8000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
 
   # Allow all outbound traffic

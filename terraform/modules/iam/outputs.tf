@@ -1,19 +1,9 @@
-variable "cluster_name" {
-  type        = string
-  description = "The name of the EKS cluster"
+output "eks_role_arn" {
+  value       = aws_iam_role.eks_role.arn
+  description = "ARN of the IAM role for EKS"
 }
 
-variable "environment" {
-  type        = string
-  description = "Deployment environment"
-}
-
-variable "s3_arn" {
-  type        = string
-  description = "The ARN of the S3 bucket"
-}
-
-variable "ecr_repository_arn" {
-  type        = string
-  description = "The ARN of the ECR repository"
+output "eks_policy_name" {
+  value       = aws_iam_role_policy.eks_ecr_s3_policy.name
+  description = "Name of the policy attached to the EKS IAM role"
 }
