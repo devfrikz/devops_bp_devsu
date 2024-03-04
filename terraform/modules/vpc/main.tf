@@ -66,6 +66,7 @@ resource "aws_route_table_association" "devops_devsu_rta" {
 resource "aws_vpc_endpoint" "devops_devsu_s3_endpoint" {
   vpc_id          = aws_vpc.devops_devsu_vpc.id
   service_name    = "com.amazonaws.${var.region}.s3"
-  route_table_ids = [aws_route_table.devops_devsu_rt.id]
+  route_table_ids = [aws_route_table.devops_devsu_vpc.id] 
 }
+
 

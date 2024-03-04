@@ -19,3 +19,8 @@ variable "ecr_repository_arn" {
   type        = string
   description = "The ARN of the ECR repository"
 }
+
+variable "node_role_arn" {
+  description = "ARN of the IAM role for EKS nodes"
+  type        = string
+}

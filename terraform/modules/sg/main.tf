@@ -50,3 +50,4 @@ resource "aws_security_group" "devops_devsu_sg" {
     Name = "devops_devsu_sg"
   }
 }
+

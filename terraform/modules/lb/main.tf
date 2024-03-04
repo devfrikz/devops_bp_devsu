@@ -2,7 +2,7 @@ resource "aws_lb" "app_lb" {
   name               = "${var.name}-alb"
   internal           = false
   load_balancer_type = "application"
-  security_groups    = [aws_security_group.alb_sg.id]
+  security_groups    = [var.alb_sg_id] # Actualizado para utilizar la variable correcta
   subnets            = var.subnet_ids
 
   tags = {

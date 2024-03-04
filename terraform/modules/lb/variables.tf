@@ -13,8 +13,7 @@ variable "subnet_ids" {
   type        = list(string)
 }
 
-# Asumiendo que ya tienes un Security Group definido para el ALB
-variable "alb_sg" {
-  description = "El ID del Security Group asignado al ALB"
+variable "alb_sg_id" {
+  description = "The ID of the Security Group for the ALB"
   type        = string
 }

@@ -1,7 +1,28 @@
 provider "aws" {
-  profile = "test_user"
+  profile = "devsu"
   region  = var.region
 }
+
+module "ecr" {
+  source      = "./modules/ecr"
+  name        = var.name
+  environment = var.environment
+}
+
+
+module "eks" {
+  source                      = "./modules/eks"
+  name                        = var.name
+  environment                 = var.environment
+  subnet_ids                  = module.vpc.public_subnet_ids
+  cluster_name                = var.cluster_name
+  role_arn                    = module.iam.eks_role_arn
+  node_role_arn               = module.iam.eks_node_role_arn
+  node_group_desired_capacity = var.node_group_desired_capacity
+  node_group_max_size         = var.node_group_max_size
+  node_group_min_size         = var.node_group_min_size
+}
+
 module "vpc" {
   source         = "./modules/vpc"
   name           = var.name
@@ -11,10 +32,25 @@ module "vpc" {
   region         = var.region
 }
 
-module "security_group" {
-  source = "./modules/security-group"
-  vpc_id = module.vpc.vpc_id
+module "sg" {
+  source         = "./modules/sg"
+  vpc_id         = module.vpc.vpc_id
+  public_subnets = module.vpc.public_subnet_ids
 }
+
+
+
+module "iam" {
+  source             = "./modules/iam"
+  cluster_name       = var.cluster_name
+  environment        = var.environment
+  s3_arn             = module.s3.s3_bucket_arn
+  ecr_repository_arn = module.ecr.ecr_repository_arn
+  node_role_arn      = module.iam.node_role_arn
+}
+
+
+
 
 module "s3" {
   source             = "./modules/s3"
@@ -27,26 +63,6 @@ module "lb" {
   name       = var.name
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.public_subnet_ids
+  alb_sg_id  = module.sg.security_group_id
 }
 
-module "iam" {
-  source             = "./modules/iam"
-  cluster_name       = var.cluster_name
-  environment        = var.environment
-  s3_arn             = module.s3.s3_bucket_arn
-  ecr_repository_arn = module.ecr.ecr_repository_arn
-}
-
-module "eks" {
-  source               = "./modules/eks"
-  name                 = var.name
-  environment          = var.environment
-  subnet_ids           = module.vpc.public_subnet_ids
-  eks_cluster_role_arn = module.iam.eks_role_arn
-}
-
-module "ecr" {
-  source      = "./modules/ecr"
-  name        = var.name
-  environment = var.environment
-}

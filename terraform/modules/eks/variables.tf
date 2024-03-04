@@ -27,3 +27,20 @@ variable "node_group_min_size" {
   description = "El número mínimo de instancias EC2 en el grupo de nodos"
   type        = number
 }
+
+variable "cluster_name" {
+  description = "The name of the EKS cluster"
+  type        = string
+}
+
+variable "role_arn" {
+  description = "ARN of the IAM role for the EKS cluster"
+  type        = string
+}
+
+
+variable "node_role_arn" {
+  description = "ARN of the IAM role for the EKS nodes"
+  type        = string
+}
+
