@@ -2,7 +2,7 @@
 
 output "ecr_repository_url" {
   description = "El URL del repositorio ECR creado."
-  value       = module.ecr.ecr_repository_url
+  value       = module.ecr.container_image_url
 }
 
 # EKS

@@ -44,6 +44,31 @@ resource "aws_security_group" "devops_devsu_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  # Permitir comunicación para kubelet
+  ingress {
+    from_port   = 10250
+    to_port     = 10250
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # Considera restringir esto a la red de tu clúster
+  }
+
+  # Permitir comunicación VXLAN para redes overlay (si es necesario)
+  ingress {
+    from_port   = 8472
+    to_port     = 8472
+    protocol    = "udp"
+    cidr_blocks = ["0.0.0.0/0"] # Considera restringir esto a la red de tu clúster
+  }
+
+  # Permitir tráfico NodePort (opcional, dependiendo de tu uso)
+  ingress {
+    from_port   = 30000
+    to_port     = 32767
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+
 
 
   tags = {

@@ -1,9 +1,7 @@
 variable "name" {
-  description = "El nombre base para los recursos de ECR"
-  type        = string
+  description = "the name of your stack, e.g. \"demo\""
 }
 
 variable "environment" {
-  description = "El entorno para el repositorio ECR, por ejemplo: 'dev', 'test', 'prod'"
-  type        = string
+  description = "the name of your environment, e.g. \"prod\""
 }

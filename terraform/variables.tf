@@ -55,3 +55,8 @@ variable "cluster_name" {
   description = "The name of the EKS cluster"
 }
 
+variable "configure_kubernetes_provider" {
+  description = "Whether to configure the Kubernetes provider"
+  type        = bool
+  default     = false
+}
