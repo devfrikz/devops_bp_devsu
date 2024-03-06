@@ -1,11 +1,10 @@
 name: PR Check
 
 on:
-  pull_request:
-    branches: [main] # Asegúrate de especificar las ramas adecuadas
+  - pull_request
 
 jobs:
-  build-test-and-validate:
+  pr:
     runs-on: ubuntu-latest
 
     steps:
