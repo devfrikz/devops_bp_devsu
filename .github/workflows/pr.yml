@@ -1,26 +1,50 @@
-name: Docker Image CI
+name: PR Check
 
 on:
-    pull_request:
-        branches:
-            - main
+  pull_request:
+    branches: [main] # Asegúrate de especificar las ramas adecuadas
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
+  build-test-and-validate:
+    runs-on: ubuntu-latest
 
-        steps:
-        - name: Checkout repository
-            uses: actions/checkout@v3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-        - name: Login to AWS ECR
-            uses: aws-actions/amazon-ecr-login@v1
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: "17"
+          distribution: "temurin"
 
-        - name: Build and push Docker image
-            env:
-                ECR_REGISTRY: <ECR_REGISTRY>
-                ECR_REPOSITORY: <ECR_REPOSITORY>
-                IMAGE_TAG: ${{ github.sha }}
-            run: |
-                docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-                docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
+      - name: Run tests
+        run: mvn clean test
+
+      - name: Build and run the application
+        run: mvn spring-boot:run &
+
+      - name: Wait for application to start
+        run: sleep 30
+
+      - name: Run API endpoint tests
+        run: |
+
+          curl --fail http://localhost:8000/api/users || exit 1
+
+      - name: Cleanup
+        if: always()
+        run: |
+
+          SPRING_BOOT_PID=$(pgrep -f 'spring-boot')
+          if [ ! -z "$SPRING_BOOT_PID" ]; then
+            echo "Stopping Spring Boot application..."
+            kill $SPRING_BOOT_PID
+          fi
