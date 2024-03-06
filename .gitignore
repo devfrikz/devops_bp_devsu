@@ -38,3 +38,8 @@ build/
 
 ### Terraform ###
 
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
