@@ -33,6 +33,7 @@ jobs:
       - name: Wait for application to start
         run: sleep 30
 
+
       - name: Cleanup
         if: always()
         run: |
