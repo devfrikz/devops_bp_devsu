@@ -73,5 +73,5 @@ jobs:
 
       - name: Deploy to EKS
         run: |
-          aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name ${{ secrets.CLUSTER_NAME }}
+          aws eks update-kubeconfig --region us-west-2 --name devsu
           kubectl set image deployment/${{ secrets.DEPLOYMENT_NAME }} ${{ secrets.CONTAINER_NAME }}=${{  secrets.DOCKER_REPO }}:${{ github.sha }} -n ${{ secrets.NAMESPACE }}
