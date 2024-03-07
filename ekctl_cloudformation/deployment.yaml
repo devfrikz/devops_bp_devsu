@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+        - name: myapp
+          image: 787341839006.dkr.ecr.us-west-2.amazonaws.com/devsu-dev-ecr:latest
+          ports:
+            - containerPort: 8000
+          env:
+            - name: NAME_DB
+              valueFrom:
+                secretKeyRef:
+                  name: devsu-secrets
+                  key: NAME_DB
+            - name: USERNAME_DB
+              valueFrom:
+                secretKeyRef:
+                  name: devsu-secrets
+                  key: USERNAME_DB
+            - name: PASSWORD_DB
+              valueFrom:
+                secretKeyRef:
+                  name: devsu-secrets
+                  key: PASSWORD_DB
+            - name: PORT
+              valueFrom:
+                secretKeyRef:
+                  name: devsu-secrets
+                  key: PORT
