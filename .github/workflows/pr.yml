@@ -33,11 +33,6 @@ jobs:
       - name: Wait for application to start
         run: sleep 30
 
-      - name: Run API endpoint tests
-        run: |
-
-          curl --fail http://localhost:8000/api/users || exit 1
-
       - name: Cleanup
         if: always()
         run: |

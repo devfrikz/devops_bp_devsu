@@ -1,0 +1,16 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        
