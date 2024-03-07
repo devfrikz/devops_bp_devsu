@@ -1,0 +1,33 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: devsu
+  region: us-west-2
+  version: "1.28"
+
+vpc:
+  id: "vpc-009e6888e2f8fc77d"
+  subnets:
+    public:
+      us-west-2a:
+        id: "subnet-0a7836ddb649abd49"
+      us-west-2c:
+        id: "subnet-0a71ecbd4234ef9e5"
+  clusterEndpoints:
+    publicAccess: true
+    privateAccess: false
+
+managedNodeGroups:
+  - name: devsu-ng
+    instanceType: t3.small
+    privateNetworking: false
+    desiredCapacity: 2
+    minSize: 1
+    maxSize: 3
+    volumeSize: 30
+    volumeType: gp2
+    labels:
+      nodegroup-type: managed
+    tags:
+      "nodegroup-type": "worker"

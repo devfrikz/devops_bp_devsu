@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+        - name: myapp
+          image: 787341839006.dkr.ecr.us-west-2.amazonaws.com/devsu-dev-ecr:latest
+          ports:
+            - containerPort: 8000
+          volumeMounts:
+            - name: data-volume
+              mountPath: /app/data
+      volumes:
+        - name: data-volume
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-service
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 8000
+      protocol: TCP
+  selector:
+    app: myapp
